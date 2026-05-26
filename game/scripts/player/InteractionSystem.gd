@@ -8,12 +8,18 @@ const ALCANCE := 2.5
 
 
 func _process(_delta: float) -> void:
+	# Oculta o prompt enquanto um diálogo estiver aberto
+	if DialogSystem.esta_em_dialogo():
+		prompt.visible = false
+		return
 	var alvo := _pegar_interagivel()
 	prompt.visible = alvo != null
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact"):
+		if DialogSystem.esta_em_dialogo():
+			return
 		var alvo := _pegar_interagivel()
 		if alvo and alvo.has_method("interact"):
 			alvo.interact()

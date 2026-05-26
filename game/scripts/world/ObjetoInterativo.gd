@@ -13,6 +13,8 @@ func _ready() -> void:
 
 
 func interact() -> void:
+	if DialogSystem.esta_em_dialogo():
+		return
+	if texto != "":
+		DialogSystem.iniciar([{"falante": nome_objeto, "fala": texto}])
 	emit_signal("interagido", nome_objeto, texto)
-	# Placeholder: imprime no console até o DialogSystem existir
-	print("[%s]  %s" % [nome_objeto, texto])

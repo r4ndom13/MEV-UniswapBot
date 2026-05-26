@@ -47,6 +47,10 @@ interact={
 
 3d/default_gravity=9.8
 
+[autoload]
+
+DialogSystem="*res://scripts/systems/DialogSystem.gd"
+
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.05, 0.05, 0.05, 1)
