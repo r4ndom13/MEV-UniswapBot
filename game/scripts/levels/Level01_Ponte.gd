@@ -1,4 +1,4 @@
-extends Node3D
+extends NivelBase
 
 @onready var mulher:    Node          = $MulherDePreto
 @onready var horror:    HorrorEventos = $HorrorEventos
@@ -13,6 +13,8 @@ extends Node3D
 var _entrada_disparada := false
 var _meio_disparado    := false
 var _fim_disparado     := false
+
+var _escolha_fim := -1   # índice da escolha final (0 = atravessa, 1 = para)
 
 
 func _ready() -> void:
@@ -99,6 +101,12 @@ func _sequencia_fim() -> void:
 	if DialogSystem.esta_em_dialogo():
 		await DialogSystem.dialogo_encerrado
 
+	# Captura qual escolha o jogador fez para persistir
+	DialogSystem.escolha_feita.connect(
+		func(idx: int): _escolha_fim = idx,
+		CONNECT_ONE_SHOT
+	)
+
 	DialogSystem.iniciar([
 		{"falante": "Zé", "fala": "Ela sumiu."},
 		{"falante": "Zé", "fala": "Não tem como ter saído andando assim."},
@@ -126,6 +134,8 @@ func _sequencia_fim() -> void:
 		}
 	])
 	await DialogSystem.dialogo_encerrado
-	await get_tree().create_timer(1.0).timeout
-	await TransicaoManager.sumir(1.8)
-	GameManager.proximo_nivel()
+
+	var resultado := "atravessou" if _escolha_fim == 0 else "parou"
+	SalvamentoManager.registrar_escolha("ponte_resultado", resultado)
+
+	await avancar(1.0)

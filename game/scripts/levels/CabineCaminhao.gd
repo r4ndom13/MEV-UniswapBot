@@ -1,4 +1,4 @@
-extends Node3D
+extends NivelBase
 
 const VELOCIDADE_ESTRADA := 8.0
 const DURACAO            := 60.0   # duração da viagem em segundos
@@ -220,6 +220,13 @@ func _evt_figura_acostamento() -> void:
 		await DialogSystem.dialogo_encerrado
 
 	TensaoManager.aumentar()
+
+	var _escolha := -1
+	DialogSystem.escolha_feita.connect(
+		func(idx: int): _escolha = idx,
+		CONNECT_ONE_SHOT
+	)
+
 	DialogSystem.iniciar([
 		{"falante": "Zé", "fala": "Tem uma pessoa no acostamento. Parada."},
 		{
@@ -246,6 +253,10 @@ func _evt_figura_acostamento() -> void:
 		}
 	])
 	await DialogSystem.dialogo_encerrado
+
+	SalvamentoManager.registrar_escolha(
+		"acostamento", "parou" if _escolha == 0 else "passou"
+	)
 	_viajando = true
 
 
@@ -260,6 +271,4 @@ func _chegar() -> void:
 		{"falante": "Zé", "fala": "Motor falhou de novo. Vai a pé daqui."},
 	])
 	await DialogSystem.dialogo_encerrado
-	await get_tree().create_timer(0.8).timeout
-	await TransicaoManager.sumir(1.5)
-	GameManager.proximo_nivel()
+	await avancar(0.8)

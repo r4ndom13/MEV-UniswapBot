@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/Level02_Venda.gd" id="1_venda"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+
+[sub_resource type="BoxShape3D" id="Shape_Chao"]
+size = Vector3(30, 0.5, 30)
+
+[node name="Level02_Venda" type="Node3D"]
+script = ExtResource("1_venda")
+
+[node name="AudioBase" type="AudioStreamPlayer" parent="."]
+volume_db = 0.0
+autoplay = false
+
+[node name="AudioTensao" type="AudioStreamPlayer" parent="."]
+volume_db = -80.0
+autoplay = false
+
+[node name="ChaoPlaceholder" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ChaoPlaceholder"]
+shape = SubResource("Shape_Chao")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

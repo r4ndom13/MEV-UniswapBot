@@ -7,7 +7,7 @@ config_version=5
 
 config/name="Os Mortos da Estrada Velha"
 config/description="Terror folclórico brasileiro — Minas Gerais, 1946"
-run/main_scene="res://scenes/levels/CabineCaminhao.tscn"
+run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [display]
@@ -53,6 +53,7 @@ TransicaoManager="*res://scripts/systems/TransicaoManager.gd"
 DialogSystem="*res://scripts/systems/DialogSystem.gd"
 TensaoManager="*res://scripts/systems/TensaoManager.gd"
 AudioManager="*res://scripts/systems/AudioManager.gd"
+SalvamentoManager="*res://scripts/systems/SalvamentoManager.gd"
 GameManager="*res://scripts/systems/GameManager.gd"
 
 [rendering]

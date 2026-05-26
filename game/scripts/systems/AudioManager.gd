@@ -27,7 +27,7 @@ func _ao_tensao_mudar(nivel: int) -> void:
 
 func _fade(base_db: float, tensao_db: float) -> void:
 	var tween := create_tween()
-	if _camada_base:
+	if is_instance_valid(_camada_base):
 		tween.tween_property(_camada_base,  "volume_db", base_db,   2.0)
-	if _camada_tensao:
+	if is_instance_valid(_camada_tensao):
 		tween.parallel().tween_property(_camada_tensao, "volume_db", tensao_db, 2.0)
