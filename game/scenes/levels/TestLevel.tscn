@@ -1,8 +1,49 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/world/ObjetoInterativo.gd" id="2_obj"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.02, 0.02, 0.04, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.08, 0.08, 0.12, 1)
+ambient_light_energy = 0.5
+fog_enabled = true
+fog_light_color = Color(0.03, 0.03, 0.06, 1)
+fog_density = 0.04
+
+[sub_resource type="BoxShape3D" id="Shape_Porta"]
+size = Vector3(0.8, 2.0, 0.1)
+
+[sub_resource type="BoxMesh" id="Mesh_Porta"]
+size = Vector3(0.8, 2.0, 0.1)
+
+[sub_resource type="BoxShape3D" id="Shape_Bilhete"]
+size = Vector3(0.28, 0.36, 0.02)
+
+[sub_resource type="BoxMesh" id="Mesh_Bilhete"]
+size = Vector3(0.28, 0.36, 0.02)
+
+[sub_resource type="BoxShape3D" id="Shape_Lampiao"]
+size = Vector3(0.18, 0.28, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_Lampiao"]
+size = Vector3(0.18, 0.28, 0.18)
+
+[sub_resource type="BoxShape3D" id="Shape_Radio"]
+size = Vector3(0.38, 0.22, 0.24)
+
+[sub_resource type="BoxMesh" id="Mesh_Radio"]
+size = Vector3(0.38, 0.22, 0.24)
 
 [node name="TestLevel" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="AmbienteAudio" type="AudioStreamPlayer" parent="."]
+autoplay = false
 
 [node name="Chao" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
@@ -29,10 +70,58 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.5, 0)
 size = Vector3(0.5, 3, 20)
 use_collision = true
 
+[node name="Porta" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.0, -9.75)
+script = ExtResource("2_obj")
+nome_objeto = "Porta"
+texto = "A porta está trancada. A madeira está inchada de umidade — não abre nem a força."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Porta"]
+shape = SubResource("Shape_Porta")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Porta"]
+mesh = SubResource("Mesh_Porta")
+
+[node name="Bilhete" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.5, -9.73)
+script = ExtResource("2_obj")
+nome_objeto = "Bilhete"
+texto = "Escrito a lápis, letra trêmula: 'Não pare na estrada depois das dez. Pelo amor de Deus, não pare.'"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bilhete"]
+shape = SubResource("Shape_Bilhete")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Bilhete"]
+mesh = SubResource("Mesh_Bilhete")
+
+[node name="Lampiao" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.14, -4)
+script = ExtResource("2_obj")
+nome_objeto = "Lampião"
+texto = "Um lampião de querosene. Quase vazio — dá pra usar mais uns dez minutos, se tanto."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lampiao"]
+shape = SubResource("Shape_Lampiao")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lampiao"]
+mesh = SubResource("Mesh_Lampiao")
+
+[node name="Radio" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.11, -4)
+script = ExtResource("2_obj")
+nome_objeto = "Rádio"
+texto = "Um Philips dos anos 40. Ligado, mas só sai estática. Por um instante, parece que tem alguém falando."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Radio"]
+shape = SubResource("Shape_Radio")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Radio"]
+mesh = SubResource("Mesh_Radio")
+
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.433013, 0.25, 0.5, 0.75, -0.433013, 0, 0.5, 0.866025, 0, 5, 0)
-light_energy = 0.4
+light_energy = 0.15
 shadow_enabled = true
