@@ -2,7 +2,7 @@ extends Node
 class_name HorrorEventos
 
 # Preenchidos pelo level script em _ready()
-var luz_principal: DirectionalLight3D = null
+var luz_principal: Light3D = null   # aceita OmniLight3D ou DirectionalLight3D
 var audio_sfx: AudioStreamPlayer = null
 var audio_passos: AudioStreamPlayer = null
 

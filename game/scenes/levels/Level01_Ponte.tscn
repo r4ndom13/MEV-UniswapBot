@@ -1,0 +1,162 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/entities/MulherDePreto.tscn" id="2_mulher"]
+[ext_resource type="Script" path="res://scripts/levels/Level01_Ponte.gd" id="3_level"]
+[ext_resource type="Script" path="res://scripts/world/HorrorEventos.gd" id="4_horror"]
+
+[sub_resource type="Environment" id="Environment_Ponte"]
+background_mode = 1
+background_color = Color(0.01, 0.01, 0.02, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.05, 0.06, 0.09, 1)
+ambient_light_energy = 0.3
+fog_enabled = true
+fog_light_color = Color(0.04, 0.05, 0.08, 1)
+fog_density = 0.07
+
+[sub_resource type="BoxShape3D" id="Shape_TrigEntrada"]
+size = Vector3(7, 4, 2)
+
+[sub_resource type="BoxShape3D" id="Shape_TrigMeio"]
+size = Vector3(5, 4, 2)
+
+[sub_resource type="BoxShape3D" id="Shape_TrigFim"]
+size = Vector3(7, 4, 2)
+
+[node name="Level01_Ponte" type="Node3D"]
+script = ExtResource("3_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_Ponte")
+
+[node name="HorrorEventos" type="Node" parent="."]
+script = ExtResource("4_horror")
+
+[node name="AudioBase" type="AudioStreamPlayer" parent="."]
+volume_db = 0.0
+autoplay = false
+
+[node name="AudioTensao" type="AudioStreamPlayer" parent="."]
+volume_db = -80.0
+autoplay = false
+
+[node name="AudioSFX" type="AudioStreamPlayer" parent="."]
+volume_db = 0.0
+autoplay = false
+
+[node name="Luzes" type="Node3D" parent="."]
+
+[node name="LuaFraca" type="DirectionalLight3D" parent="Luzes"]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0.5, 0.75, -0.433013, 0, 0.5, 0.866025, 0, 8, 0)
+light_color = Color(0.55, 0.65, 1.0, 1)
+light_energy = 0.04
+shadow_enabled = true
+
+[node name="LampiaoA" type="OmniLight3D" parent="Luzes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 3.2, -22)
+light_color = Color(1.0, 0.72, 0.28, 1)
+light_energy = 2.0
+omni_range = 7.0
+
+[node name="LampiaoB" type="OmniLight3D" parent="Luzes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 3.2, -22)
+light_color = Color(1.0, 0.72, 0.28, 1)
+light_energy = 2.0
+omni_range = 7.0
+
+[node name="LampiaoC" type="OmniLight3D" parent="Luzes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, -27.5)
+light_color = Color(1.0, 0.68, 0.22, 1)
+light_energy = 1.8
+omni_range = 6.0
+
+[node name="LampiaoD" type="OmniLight3D" parent="Luzes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 3.2, -31)
+light_color = Color(1.0, 0.72, 0.28, 1)
+light_energy = 2.0
+omni_range = 7.0
+
+[node name="LampiaoE" type="OmniLight3D" parent="Luzes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 3.2, -31)
+light_color = Color(1.0, 0.72, 0.28, 1)
+light_energy = 2.0
+omni_range = 7.0
+
+[node name="Geometria" type="Node3D" parent="."]
+
+[node name="ChaoEstrada" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -10)
+size = Vector3(5, 0.5, 20)
+use_collision = true
+
+[node name="MargemEsqEstrada" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 3, -10)
+size = Vector3(6, 7, 22)
+use_collision = true
+
+[node name="MargemDirEstrada" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 3, -10)
+size = Vector3(6, 7, 22)
+use_collision = true
+
+[node name="TabuleiroPonte" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -27.5)
+size = Vector3(5, 0.2, 15)
+use_collision = true
+
+[node name="GradilEsquerdo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 0.7, -27.5)
+size = Vector3(0.2, 1.2, 15)
+use_collision = true
+
+[node name="GradilDireito" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7, 0.7, -27.5)
+size = Vector3(0.2, 1.2, 15)
+use_collision = true
+
+[node name="Agua" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.2, -27.5)
+size = Vector3(22, 0.4, 18)
+use_collision = false
+
+[node name="ChaoPosPonte" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -40)
+size = Vector3(5, 0.5, 10)
+use_collision = true
+
+[node name="MargemEsqPoste" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 3, -40)
+size = Vector3(6, 7, 12)
+use_collision = true
+
+[node name="MargemDirPoste" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 3, -40)
+size = Vector3(6, 7, 12)
+use_collision = true
+
+[node name="Gatilhos" type="Node3D" parent="."]
+
+[node name="TriggerEntrada" type="Area3D" parent="Gatilhos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -17)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Gatilhos/TriggerEntrada"]
+shape = SubResource("Shape_TrigEntrada")
+
+[node name="TriggerMeio" type="Area3D" parent="Gatilhos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -27.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Gatilhos/TriggerMeio"]
+shape = SubResource("Shape_TrigMeio")
+
+[node name="TriggerFim" type="Area3D" parent="Gatilhos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -38)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Gatilhos/TriggerFim"]
+shape = SubResource("Shape_TrigFim")
+
+[node name="MulherDePreto" parent="." instance=ExtResource("2_mulher")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -33)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3)

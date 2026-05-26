@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/MulherDePretoNPC.gd" id="1_mulher"]
+
+[sub_resource type="BoxShape3D" id="Shape_Mulher"]
+size = Vector3(0.42, 1.8, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_Mulher"]
+size = Vector3(0.42, 1.8, 0.18)
+
+[node name="MulherDePreto" type="StaticBody3D"]
+script = ExtResource("1_mulher")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape_Mulher")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh_Mulher")
