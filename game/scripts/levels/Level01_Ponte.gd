@@ -123,3 +123,6 @@ func _sequencia_fim() -> void:
 			]
 		}
 	])
+	await DialogSystem.dialogo_encerrado
+	await get_tree().create_timer(2.5).timeout
+	GameManager.proximo_nivel()
