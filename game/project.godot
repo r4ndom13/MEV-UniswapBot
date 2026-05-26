@@ -50,6 +50,8 @@ interact={
 [autoload]
 
 DialogSystem="*res://scripts/systems/DialogSystem.gd"
+TensaoManager="*res://scripts/systems/TensaoManager.gd"
+AudioManager="*res://scripts/systems/AudioManager.gd"
 
 [rendering]
 

@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/world/ObjetoInterativo.gd" id="2_obj"]
 [ext_resource type="Script" path="res://scripts/levels/TestLevel.gd" id="3_level"]
 [ext_resource type="PackedScene" path="res://scenes/entities/Viajante.tscn" id="4_viajante"]
+[ext_resource type="Script" path="res://scripts/world/HorrorEventos.gd" id="5_horror"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -45,7 +46,19 @@ script = ExtResource("3_level")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1")
 
-[node name="AmbienteAudio" type="AudioStreamPlayer" parent="."]
+[node name="HorrorEventos" type="Node" parent="."]
+script = ExtResource("5_horror")
+
+[node name="AudioBase" type="AudioStreamPlayer" parent="."]
+volume_db = 0.0
+autoplay = false
+
+[node name="AudioTensao" type="AudioStreamPlayer" parent="."]
+volume_db = -80.0
+autoplay = false
+
+[node name="AudioSFX" type="AudioStreamPlayer" parent="."]
+volume_db = 0.0
 autoplay = false
 
 [node name="Chao" type="CSGBox3D" parent="."]
