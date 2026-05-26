@@ -25,6 +25,8 @@ func _ready() -> void:
 	trig_meio.body_entered.connect(_on_meio)
 	trig_fim.body_entered.connect(_on_fim)
 
+	TransicaoManager.aparecer(1.5)
+
 	# Introdução: orienta o jogador sobre situação e personagem
 	await get_tree().create_timer(2.0).timeout
 	DialogSystem.iniciar([
@@ -124,5 +126,6 @@ func _sequencia_fim() -> void:
 		}
 	])
 	await DialogSystem.dialogo_encerrado
-	await get_tree().create_timer(2.5).timeout
+	await get_tree().create_timer(1.0).timeout
+	await TransicaoManager.sumir(1.8)
 	GameManager.proximo_nivel()

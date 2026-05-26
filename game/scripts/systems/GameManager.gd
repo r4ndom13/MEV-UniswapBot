@@ -22,9 +22,12 @@ func reiniciar() -> void:
 
 
 func _fim_mvp() -> void:
-	await get_tree().create_timer(1.5).timeout
+	# Tela preta (TransicaoManager layer 5) fica visível.
+	# O diálogo (DialogSystem layer 10) aparece por cima dela.
+	await get_tree().create_timer(1.2).timeout
 	DialogSystem.iniciar([
 		{"falante": "", "fala": "A estrada some na escuridão."},
-		{"falante": "", "fala": "Zé chegou."},
-		{"falante": "", "fala": "— Fim do MVP —"},
+		{"falante": "", "fala": "Zé chegou em Pedra Branca. Antes do amanhecer."},
+		{"falante": "", "fala": "Mas a ponte ficou com ele. Ficou com a memória do rio."},
+		{"falante": "", "fala": "— Fim do Vertical Slice —"},
 	])

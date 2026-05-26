@@ -1,14 +1,14 @@
 extends Node3D
 
 const VELOCIDADE_ESTRADA := 8.0
-const DURACAO            := 90.0
+const DURACAO            := 60.0   # duração da viagem em segundos
 const COMPRIMENTO_BLOCO  := 25.0
 const N_BLOCOS           := 3
 const TOTAL_LOOP         := COMPRIMENTO_BLOCO * N_BLOCOS   # 75 m
 
-@onready var horror:    HorrorEventos     = $HorrorEventos
-@onready var farol:     SpotLight3D       = $Luzes/Farol
-@onready var audio_base: AudioStreamPlayer = $AudioBase
+@onready var horror:       HorrorEventos     = $HorrorEventos
+@onready var farol:        SpotLight3D       = $Luzes/Farol
+@onready var audio_base:   AudioStreamPlayer = $AudioBase
 @onready var audio_tensao: AudioStreamPlayer = $AudioTensao
 
 var _segmentos: Array[MeshInstance3D] = []
@@ -18,7 +18,6 @@ var _chegou    := false
 var _progresso := 0.0
 var _rng       := RandomNumberGenerator.new()
 
-# Material reutilizável para asfalto e acostamento
 var _mat_asfalto: StandardMaterial3D
 var _mat_terra:   StandardMaterial3D
 var _mat_arvore:  StandardMaterial3D
@@ -35,7 +34,9 @@ func _ready() -> void:
 	_criar_estrada()
 	_criar_arvores()
 
-	await get_tree().create_timer(2.0).timeout
+	TransicaoManager.aparecer(1.5)
+
+	await get_tree().create_timer(2.5).timeout
 	DialogSystem.iniciar([
 		{"falante": "Zé", "fala": "Três horas da manhã. Motor pegando, graças a Deus."},
 		{"falante": "Zé", "fala": "Ainda falta uns trinta km pra chegar em Pedra Branca."},
@@ -45,7 +46,7 @@ func _ready() -> void:
 	_agendar_eventos()
 
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	if not _viajando:
 		return
 
@@ -66,7 +67,6 @@ func _rolar_estrada(delta: float) -> void:
 		if not is_instance_valid(seg):
 			continue
 		seg.position.z += deslocamento
-		# Quando o segmento passou do jogador, recicla no final da fila
 		if seg.position.z > COMPRIMENTO_BLOCO:
 			seg.position.z -= TOTAL_LOOP
 
@@ -103,7 +103,6 @@ func _criar_estrada() -> void:
 		add_child(seg)
 		_segmentos.append(seg)
 
-		# Acostamento esquerdo
 		var esq := MeshInstance3D.new()
 		var mesh_esq := BoxMesh.new()
 		mesh_esq.size = Vector3(3.0, 0.15, COMPRIMENTO_BLOCO)
@@ -113,7 +112,6 @@ func _criar_estrada() -> void:
 		add_child(esq)
 		_segmentos.append(esq)
 
-		# Acostamento direito
 		var dir := MeshInstance3D.new()
 		var mesh_dir := BoxMesh.new()
 		mesh_dir.size = Vector3(3.0, 0.15, COMPRIMENTO_BLOCO)
@@ -152,11 +150,12 @@ func _ao_tensao_mudar(nivel: int) -> void:
 # ── Eventos narrativos ───────────────────────────────────────────────────────
 
 func _agendar_eventos() -> void:
-	_timer(_rng.randf_range(10.0, 18.0), _evt_radio)
-	_timer(_rng.randf_range(25.0, 35.0), _evt_luz_distante)
-	_timer(_rng.randf_range(45.0, 55.0), _evt_batida)
-	_timer(_rng.randf_range(62.0, 72.0), _evt_vulto_estrada)
-	_timer(_rng.randf_range(78.0, 85.0), _evt_figura_acostamento)
+	# Cinco eventos distribuídos em 60s, com variação aleatória de ~6s cada
+	_timer(_rng.randf_range(8.0,  13.0), _evt_radio)
+	_timer(_rng.randf_range(18.0, 24.0), _evt_luz_distante)
+	_timer(_rng.randf_range(30.0, 36.0), _evt_batida)
+	_timer(_rng.randf_range(42.0, 48.0), _evt_vulto_estrada)
+	_timer(_rng.randf_range(52.0, 57.0), _evt_figura_acostamento)
 
 
 func _timer(segundos: float, callback: Callable) -> void:
@@ -188,7 +187,7 @@ func _evt_luz_distante() -> void:
 func _evt_batida() -> void:
 	_viajando = false
 	horror.piscar_luz(2)
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.2).timeout
 
 	if DialogSystem.esta_em_dialogo():
 		await DialogSystem.dialogo_encerrado
@@ -232,7 +231,7 @@ func _evt_figura_acostamento() -> void:
 					"proximo": [
 						{"falante": "Zé", "fala": "Desacelerou. Olhou pelo espelho."},
 						{"falante": "Zé", "fala": "Não tinha mais ninguém lá."},
-						{"falante": "Zé", "fala": "Acelerou de novo. O coração ainda tá na garganta."},
+						{"falante": "Zé", "fala": "Acelerou de novo. O coração tá na garganta."},
 					]
 				},
 				{
@@ -250,7 +249,7 @@ func _evt_figura_acostamento() -> void:
 	_viajando = true
 
 
-# ── Chegada ──────────────────────────────────────────────────────────────────
+# ── Chegada na ponte ─────────────────────────────────────────────────────────
 
 func _chegar() -> void:
 	if DialogSystem.esta_em_dialogo():
@@ -261,5 +260,6 @@ func _chegar() -> void:
 		{"falante": "Zé", "fala": "Motor falhou de novo. Vai a pé daqui."},
 	])
 	await DialogSystem.dialogo_encerrado
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(0.8).timeout
+	await TransicaoManager.sumir(1.5)
 	GameManager.proximo_nivel()
